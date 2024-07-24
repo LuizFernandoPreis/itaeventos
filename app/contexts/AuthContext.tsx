@@ -46,7 +46,7 @@ export function AuthProvider({children} : any) {
     })
 
     setCookie(undefined, 'nextauth.token', token, {
-      maxAge: 60 * 60 * 1, // 1 hour
+      maxAge: 60 * 60 * 1, 
     })
 
     api.defaults.headers['Authorization'] = `Bearer ${token}`;
@@ -58,7 +58,6 @@ export function AuthProvider({children} : any) {
 
   return (
     <AuthContext.Provider value={{ user, isAuthenticated, signIn }}>
-
       {children}
     </AuthContext.Provider>
   )
