@@ -1,10 +1,10 @@
-
+'use client'
 import React from "react";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { parseCookies } from "nookies";
-import Footer from "./_components/Footer";
 import Navbar from "./_components/Navbar";
+import Footer from "./_components/Footer";
+import { parseCookies } from "nookies";
 import TokenLayout from "./layouts/tokenLayout";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -30,7 +30,7 @@ const RootLayout = ({
           <>
           <Navbar/>
             <main className="flex-grow">{children}</main>
-            <Footer />
+            <Footer/>
           </>
         )}
       </body>
