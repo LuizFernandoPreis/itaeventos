@@ -1,4 +1,3 @@
-'use client'
 import React from "react";
 import { Inter } from "next/font/google";
 import "./globals.css";
@@ -14,9 +13,6 @@ const RootLayout = ({
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
-  const { token } = parseCookies();
-  const isAuthenticated = !!token;
-
   return (
     <html lang="pt">
       <head>
@@ -24,15 +20,12 @@ const RootLayout = ({
         <style>{`body { font-family: ${inter}; }`}</style>
       </head>
       <body className="flex flex-col min-h-screen">
-        {isAuthenticated ? (
-          <TokenLayout>{children}</TokenLayout>
-        ) : (
-          <>
+        <header>
+          <nav></nav>
           <Navbar/>
-            <main className="flex-grow">{children}</main>
-            <Footer/>
-          </>
-        )}
+          </header>
+          {children}
+          <Footer/>
       </body>
     </html>
   );

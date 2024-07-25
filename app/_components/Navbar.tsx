@@ -13,10 +13,11 @@ const Navbar = () => {
   const { token } = parseCookies();
   const isAuthenticated = !!token;
 
-
+  
   return (
     <>
-      <nav className="bg-gray-900 p-4">
+    {isAuthenticated ? (
+      <nav className={`${!isAuthenticated ? 'hidden' : ''}bg-gray-900 p-4 mt-8`}>
         <div className="container mx-auto flex items-center justify-between relative">
           <a href="/" className="flex items-center text-white mr-auto w-[100%]">
             <img src="/logo.jpg" alt="Logo" className="h-12 mr-1 w-auto" />
@@ -84,7 +85,8 @@ const Navbar = () => {
             </a>
           </div>
         </div>
-      </nav>
+      </nav>)
+      : (<></>)}
     </>
   );
 };
