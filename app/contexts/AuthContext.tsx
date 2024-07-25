@@ -8,7 +8,6 @@ import { api } from "../services/api";
 type User = {
   name: string;
   email: string;
-  avatar_url: string;
 }
 
 type SignInData = {
@@ -21,6 +20,15 @@ type AuthContextType = {
   user: User | null;
   signIn: (data: SignInData) => Promise<void>
 }
+
+type SignInResponse = {
+  token: string;
+  user: {
+    name: string;
+    email: string;
+    avatar_url: string;
+  };
+} | null;
 
 export const AuthContext = createContext({} as AuthContextType)
 
@@ -40,10 +48,16 @@ export function AuthProvider({children} : any) {
   }, [])
 
   async function signIn({ email, password }: SignInData) {
-    const { token, user } = await signInRequest({
+    const response: SignInResponse = await signInRequest({
       email,
       password,
-    })
+    });
+  
+    if (response === null) {
+      return 
+    }
+  
+    const { token, user } = response;
 
     setCookie(undefined, 'nextauth.token', token, {
       maxAge: 60 * 60 * 1, 
