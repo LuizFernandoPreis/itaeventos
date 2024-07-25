@@ -38,7 +38,7 @@ export function AuthProvider({children} : any) {
   const isAuthenticated = !!user;
 
   useEffect(() => {
-    const { 'nextauth.token': token } = parseCookies()
+    const { 'token': token } = parseCookies()
 
     if (token) {
       recoverUserInformation().then(response => {
@@ -59,7 +59,7 @@ export function AuthProvider({children} : any) {
   
     const { token, user } = response;
 
-    setCookie(undefined, 'nextauth.token', token, {
+    setCookie(undefined, 'token', token, {
       maxAge: 60 * 60 * 1, 
     })
 

@@ -9,7 +9,6 @@ export default function Home() {
       <AuthProvider>
       <HomePage/>
       </AuthProvider>
-
       </main>
   );
 }

@@ -1,43 +1,41 @@
-import type { Metadata } from "next";
+
+import React from "react";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Navbar from "./_components/Navbar";
-import Footer from "./_components/Footer";
 import { parseCookies } from "nookies";
+import Footer from "./_components/Footer";
+import Navbar from "./_components/Navbar";
+import TokenLayout from "./layouts/tokenLayout";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata: Metadata = {
-  title: "ItaEventos",
-  description: "Itamar, Gestão de Eventos",
-};
-
-export default function RootLayout({
+const RootLayout = ({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) {
+}>) => {
   const { token } = parseCookies();
+  const isAuthenticated = !!token;
 
-  if (!token) {
-    return (
-      <html lang="pt-br">
-        <body className="flex h-full min-h-screen flex-col bg-white text-primary ">
-          {children}
-        </body>
-      </html>
-    );
-  } else {
-    return (
-      <html lang="pt-br">
-        <body className="flex h-full min-h-screen flex-col bg-white text-primary">
-          <header>
-            <Navbar />
-          </header>
-          {children}
-          <Footer />
-        </body>
-      </html>
-    );
-  }
-}
+  return (
+    <html lang="pt">
+      <head>
+        <title>ItaEventos</title>
+        <style>{`body { font-family: ${inter}; }`}</style>
+      </head>
+      <body className="flex flex-col min-h-screen">
+        {isAuthenticated ? (
+          <TokenLayout>{children}</TokenLayout>
+        ) : (
+          <>
+          <Navbar/>
+            <main className="flex-grow">{children}</main>
+            <Footer />
+          </>
+        )}
+      </body>
+    </html>
+  );
+};
+
+export default RootLayout;

@@ -3,7 +3,7 @@ import type { NextRequest } from 'next/server'
  
 
 export function middleware(request: NextRequest) {
-  let cookie = request.cookies.get('nextauth.token')
+  let cookie = request.cookies.get('token')
   if (!cookie) return NextResponse.redirect(new URL('/signin', request.url));
 }
  
