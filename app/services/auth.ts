@@ -11,7 +11,7 @@ const delay = (amount = 750) => new Promise(resolve => setTimeout(resolve, amoun
 export async function signInRequest(data: SignInRequestData) {
   await delay()
   const user = new UserService()
-  await user.updateUser({ where: { id: 1 }, data: { name: '8080' } });
+  // await user.updateUser({ where: { id: 1 }, data: { name: '8080' } });
 
 
   if(parseInt(data?.password) == 123) return {
