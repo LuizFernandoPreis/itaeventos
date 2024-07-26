@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import React from "react";
 import { Inter } from "next/font/google";
 import "./globals.css";
@@ -24,9 +24,17 @@ const RootLayout = ({
         <title>ItaEventos</title>
       </head>
       <body className="flex flex-col min-h-screen">
-      <AuthProvider>
-          {children}
-          </AuthProvider>
+        {isAuthenticated ? (
+          <>
+            <header>
+              <Navbar />
+            </header>
+            <AuthProvider>{children}</AuthProvider>
+            <Footer />
+          </>
+        ) : (
+          <AuthProvider>{children}</AuthProvider>
+        )}
       </body>
     </html>
   );
