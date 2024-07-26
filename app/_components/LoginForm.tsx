@@ -3,7 +3,7 @@ import Head from 'next/head'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { useContext } from 'react';
 import { AuthContext } from '../contexts/AuthContext';
-import { LockClosedIcon } from '@heroicons/react/24/solid'; // Certifique-se de que o caminho esteja correto para o seu caso.
+import { LockClosedIcon } from '@heroicons/react/24/solid';
 
 
 interface SignInFormInputs {

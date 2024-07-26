@@ -1,39 +1,25 @@
 "use client";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
+import Link from "next/link";
+import { signUpRequest } from "@/app/services/auth"; 
+import { AuthContext, AuthProvider } from "@/app/contexts/AuthContext";
 
 export default function Home() {
+  const { signUp } = useContext(AuthContext);
   useEffect(() => {
     const form = document.getElementById("userForm");
     const handleSubmit = async (event: Event) => {
       event.preventDefault();
 
-      const nome = (document.getElementById("nome") as HTMLInputElement).value;
+      const name = (document.getElementById("nome") as HTMLInputElement).value;
       const email = (document.getElementById("email") as HTMLInputElement)
         .value;
-      const senha = (document.getElementById("senha") as HTMLInputElement)
+      const password = (document.getElementById("senha") as HTMLInputElement)
         .value;
-      try {
-        const response = await fetch(
-          "https://www.neuronavigator.x10.mx/php/createUser.php",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ nome, email, senha }),
-          }
-        );
+      const role = "adm";
 
-        const dataResponse = await response.json();
-        // eslint-disable-next-line react-hooks/rules-of-hooks
-        const router = useRouter();
-        router.push("/login");
-        console.log(dataResponse);
-      } catch (error) {
-        console.error("Erro ao cadastrar o usuário:", error);
-        alert("Erro ao cadastrar o usuário");
-      }
+      await signUp({ email, password, name, role });
     };
 
     form?.addEventListener("submit", handleSubmit);
@@ -44,6 +30,7 @@ export default function Home() {
   }, []);
   return (
     <>
+    <AuthProvider>
       <div className="flex justify-center h-screen">
         <div className="bg-white bg-opacity-50 p-8 rounded-lg  md:shadow-lg w-full md:my-auto max-w-2xl">
           <h2 className="text-2xl font-bold mb-6 text-center">Cadastro</h2>
@@ -95,18 +82,19 @@ export default function Home() {
             </div>
             <div className="flex items-center justify-between">
               <button
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                 type="submit"
               >
                 Cadastrar
               </button>
-              <a href="/login" className="text-blue-500">
+              <Link href="/signin" className="text-blue-500">
                 Já Possuo Conta
-              </a>
+              </Link>
             </div>
           </form>
         </div>
       </div>
+      </AuthProvider>
     </>
   );
 }

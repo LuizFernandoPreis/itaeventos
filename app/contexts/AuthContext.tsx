@@ -1,8 +1,7 @@
-import { createContext, useEffect, useState } from "react";
-import { setCookie, parseCookies } from 'nookies'
-import Router from 'next/router'
-
-import { recoverUserInformation, signInRequest } from "../services/auth";
+import { createContext, useEffect, useState, ReactNode } from "react";
+import { setCookie, parseCookies } from 'nookies';
+import { useRouter } from 'next/navigation';
+import { recoverUserInformation, signInRequest, signUpRequest } from "../services/auth";
 import { api } from "../services/api";
 
 type User = {
@@ -15,10 +14,18 @@ type SignInData = {
   password: string;
 }
 
+type SignUpData = {
+  email: string;
+  password: string;
+  name: string;
+  role: string;
+}
+
 type AuthContextType = {
   isAuthenticated: boolean;
   user: User | null;
-  signIn: (data: SignInData) => Promise<void>
+  signIn: (data: SignInData) => Promise<void>;
+  signUp: (data: SignUpData) => Promise<void>;
 }
 
 type SignInResponse = {
@@ -26,53 +33,76 @@ type SignInResponse = {
   user: {
     name: string;
     email: string;
-    avatar_url: string;
   };
 } | null;
+export const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 
-export const AuthContext = createContext({} as AuthContextType)
-
-export function AuthProvider({children} : any) {
-  const [user, setUser] = useState<User | null>(null)
-
+export function AuthProvider({ children }: { children: ReactNode }) {
+  const [user, setUser] = useState<User | null>(null);
+  const router = useRouter();
+  
   const isAuthenticated = !!user;
 
   useEffect(() => {
-    const { 'token': token } = parseCookies()
+    const { 'token': token } = parseCookies();
 
     if (token) {
       recoverUserInformation().then(response => {
-        setUser(response.user)
-      })
+        if (response) {
+          setUser(response.user);
+        }
+      }).catch(error => {
+        console.error('Erro ao recuperar informações do usuário:', error);
+      });
     }
-  }, [])
+  }, []);
 
   async function signIn({ email, password }: SignInData) {
-    const response: SignInResponse = await signInRequest({
-      email,
-      password,
-    });
+    try {
+      const response = await fetch('/api/getUser', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
   
-    if (response === null) {
-      return 
+      const data = await response.json();
+      
+      if (response.ok) {
+        console.log(data.data); 
+         
+        const { token, user } = data.data;
+
+        setCookie(undefined, 'token', token, {
+          maxAge: 60 * 60 * 1, 
+        })
+
+        router.push('/')
+
+      } else {
+        alert('Email ou senha incorretos!')
+      }
+    } catch (error) {
+      console.error('Erro na solicitação:', error);
     }
+  }
   
-    const { token, user } = response;
-
-    setCookie(undefined, 'token', token, {
-      maxAge: 60 * 60 * 1, 
-    })
-
-    api.defaults.headers['Authorization'] = `Bearer ${token}`;
-
-    setUser(user)
 
 
+  async function signUp({ email, password, name, role }: SignUpData) {
+    try {
+      await signUpRequest({ email, password, name, role });
+      router.push('/signin');
+    } catch (error) {
+      console.error('Erro ao criar usuário:', error);
+      // Adicione feedback para o usuário aqui
+    }
   }
 
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated, signIn }}>
+    <AuthContext.Provider value={{ user, isAuthenticated, signIn, signUp }}>
       {children}
     </AuthContext.Provider>
-  )
+  );
 }

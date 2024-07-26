@@ -1,22 +1,25 @@
 'use client'
 import { parseCookies } from 'nookies';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const Footer = () => {
 
     const [isOpen, setIsOpen] = useState(false);
-  
+    const [isAuthenticated, setAuthenticated] = useState(false);
     const toggleMenu = () => {
       setIsOpen(!isOpen);
     };
   
-    const { token } = parseCookies();
-    const isAuthenticated = !!token;
+    useEffect(()=>{
+      const { token } = parseCookies();
+      !!token ? setAuthenticated(true) : {}
+    })
+    
   
 
   return (
     <>
-    <footer className={`${!isAuthenticated ? 'none' : ''}bg-gray-900 p-4 mt-8`}>
+    <footer className={`${!isAuthenticated ? 'hidden' : ''}bg-gray-900 p-4 mt-8`}>
       <div className={`container mx-auto flex flex-col items-center `}>
         <div className="flex space-x-4 mb-4">
           <a href="https://facebook.com" className="text-gray-300 hover:text-white">
