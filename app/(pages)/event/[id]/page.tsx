@@ -34,7 +34,7 @@ export default function EditEvent({ params }: { params: { id: Number } }) {
   useEffect(() => {
     if (id) {
       axios
-        .get(`http://localhost:3000/api/event?${id}`)
+        .get(`/api/event?${id}`)
         .then((response) => {
           setEvent(response.data[0]);
           const data = response.data[0];
