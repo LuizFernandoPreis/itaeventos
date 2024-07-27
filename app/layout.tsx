@@ -30,7 +30,9 @@ const RootLayout = ({
               <Navbar />
             </header>
             <AuthProvider>{children}</AuthProvider>
+            <footer>
             <Footer />
+            </footer>
           </>
         ) : (
           <AuthProvider>{children}</AuthProvider>
