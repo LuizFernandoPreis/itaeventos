@@ -35,9 +35,9 @@ export default function Home() {
       {events.map((event: Event) => (
         <HomeCard key={event.id} event={event} />
       ))}
-    </div>
-    <div className="w-screen">
+      <div className="w-screen">
       <Footer />
+    </div>
     </div>
     </>
   );
