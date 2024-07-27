@@ -31,7 +31,7 @@ export default function Home() {
 
   return (
     <>
-      <div className="flex flex-wrap justify-center items-center h-screen space-x-4 grow">
+      <div className="flex flex-wrap justify-center items-center h-screen space-x-4">
         {events.map((event: Event) => (
           <HomeCard key={event.id} event={event} />
         ))}

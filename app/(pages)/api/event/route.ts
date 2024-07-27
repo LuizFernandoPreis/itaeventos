@@ -26,13 +26,38 @@ export async function POST(request: NextRequest) {
   }
 }
 
+export async function PUT(request: NextRequest) {
+    try {
+      const { id, title, date, location, description, image } = await request.json();
+  
+      if (!id) {
+        return NextResponse.json({ error: 'ID do evento é necessário' }, { status: 400 });
+      }
+  
+      const event = await prisma.events.update({
+        where: { id: Number(id) },
+        data: { 
+          title,
+          date,
+          location,
+          description,
+          image,
+        },
+      });
+  
+      return NextResponse.json(event, { status: 200 });
+    } catch (error) {
+      console.error('Error updating event:', error);
+      return NextResponse.json({ error: 'Erro ao atualizar evento' }, { status: 400 });
+    }
+  }
+    
 export async function GET(request: NextRequest) {
     const url = new URL(request.url);
     const id = url.searchParams.get('id');
-  
+    console.log(id)
     try {
       if (id) {
-        // Se um ID for fornecido, retorna o evento com esse ID
         const event = await prisma.events.findUnique({
           where: { id: Number(id) },
         });
@@ -43,7 +68,6 @@ export async function GET(request: NextRequest) {
           return NextResponse.json({ error: 'Evento não encontrado' }, { status: 404 });
         }
       } else {
-        // Se nenhum ID for fornecido, retorna todos os eventos
         const events = await prisma.events.findMany();
         return NextResponse.json(events, { status: 200 });
       }
