@@ -5,6 +5,7 @@ import axios from "axios";
 import HomeCard from "./_components/HomeCard";
 import { Event } from "./types/event";
 import Spinner from "./_components/spinner";
+import Footer from "./_components/Footer";
 export default function Home() {
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
@@ -33,6 +34,7 @@ export default function Home() {
       {events.map((event: Event) => (
         <HomeCard key={event.id} event={event} />
       ))}
+      <Footer />
     </div>
   );
 }

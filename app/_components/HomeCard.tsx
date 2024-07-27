@@ -2,7 +2,6 @@ import React from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Event } from "../types/event";
-import Footer from "./Footer";
 
 interface HomeCardProps {
   event: Event;
@@ -54,7 +53,6 @@ const HomeCard: React.FC<HomeCardProps> = ({ event }) => {
           Delete
         </button>
       </div>
-      <Footer />
     </div>
   );
 };
