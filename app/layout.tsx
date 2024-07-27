@@ -23,23 +23,17 @@ const RootLayout = ({
         <title>ItaEventos</title>
       </head>
       <body className="flex flex-col min-h-screen">
-        {isAuthenticated ? (
-          <>
-            <header className="flex-shrink-0">
-              <Navbar />
-            </header>
-            <main className="flex-grow">
-              <AuthProvider>{children}</AuthProvider>
-            </main>
-            <footer className="flex-shrink-0">
-              <Footer />
-            </footer>
-          </>
-        ) : (
-          <main className="flex-grow">
-            <AuthProvider>{children}</AuthProvider>
-          </main>
+        {isAuthenticated && (
+          <header className="bg-gray-800 text-white">
+            <Navbar />
+          </header>
         )}
+        <main className="flex-grow">
+          <AuthProvider>{children}</AuthProvider>
+        </main>
+        <footer className="bg-gray-800 text-white py-4 mt-auto">
+          <Footer />
+        </footer>
       </body>
     </html>
   );
