@@ -1,38 +1,38 @@
 "use client";
-import Image from "next/image";
-import HomePage from "./_components/LoginForm";
-import { AuthProvider } from "./contexts/AuthContext";
-import Navbar from "./_components/Navbar";
-import Footer from "./_components/Footer";
+
+import { useEffect, useState } from "react";
+import axios from "axios";
 import HomeCard from "./_components/HomeCard";
 import { Event } from "./types/event";
-
+import Spinner from "./_components/spinner";
 export default function Home() {
-  const events: Event[] = [
-    {
-      id: 1,
-      title: 'Conference 2024',
-      date: '2024-08-20',
-      location: 'New York, NY',
-      description: 'An exciting conference about technology and innovation.',
-      image: '/config.jpeg'
-    },
-    {
-      id: 2,
-      title: 'Workshop on AI',
-      date: '2024-09-15',
-      location: 'San Francisco, CA',
-      description: 'Hands-on workshop on Artificial Intelligence.',
-      image: '/path/to/image2.jpg'
+  const [events, setEvents] = useState<Event[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function fetchEvents() {
+      try {
+        const response = await axios.get('/api/event');
+        setEvents(response.data);
+      } catch (err) {
+        setError('Failed to load events');
+      } finally {
+        setLoading(false);
+      }
     }
-    // Adicione mais eventos conforme necessário
-  ];
+
+    fetchEvents();
+  }, []);
+
+  if (loading) return <Spinner />;
+  if (error) return <div>{error}</div>;
 
   return (
     <div className="flex flex-wrap justify-center items-center h-screen space-x-4">
-      {events.map(event => (
+      {events.map((event: Event) => (
         <HomeCard key={event.id} event={event} />
       ))}
     </div>
-  )
+  );
 }

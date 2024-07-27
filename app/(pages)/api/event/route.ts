@@ -25,3 +25,16 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Erro ao criar evento' }, { status: 400 });
   }
 }
+
+export async function GET(request: NextRequest) {
+    try {
+        const event = await prisma.events.findMany({});
+    
+        return NextResponse.json(event, { status: 200 });
+      } catch (error) {
+        console.error('Error creating event:', error);
+        return NextResponse.json({ error: 'Erro ao criar evento' }, { status: 400 });
+      }
+    return NextResponse.json({ data: 'oi' });
+  }
+  

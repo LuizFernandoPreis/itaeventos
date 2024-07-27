@@ -78,8 +78,8 @@ export default function HomePage() {
             </div>
 
             <div className=" text-sm">
-              <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
-                Esqueceu a senha?
+              <a href="/signup" className="font-medium text-indigo-600 hover:text-indigo-500">
+                Já Possui conta?
               </a>
             </div>
           </div>
