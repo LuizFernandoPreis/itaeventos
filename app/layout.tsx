@@ -28,7 +28,7 @@ const RootLayout = ({
             <Navbar />
           </header>
         )}
-        <main className="flex-grow">
+        <main className="flex-grow md=auto">
           <AuthProvider>{children}</AuthProvider>
         </main>
         <footer className="bg-gray-800 text-white py-4 mt-auto">
