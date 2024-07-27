@@ -30,11 +30,15 @@ export default function Home() {
   if (error) return <div>{error}</div>;
 
   return (
+    <>
     <div className="flex flex-wrap justify-center items-center h-screen space-x-4">
       {events.map((event: Event) => (
         <HomeCard key={event.id} event={event} />
       ))}
+    </div>
+    <div className="w-screen">
       <Footer />
     </div>
+    </>
   );
 }
