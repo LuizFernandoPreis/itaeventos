@@ -14,10 +14,10 @@ export default function Home() {
   useEffect(() => {
     async function fetchEvents() {
       try {
-        const response = await axios.get('/api/event');
+        const response = await axios.get("/api/event");
         setEvents(response.data);
       } catch (err) {
-        setError('Failed to load events');
+        setError("Failed to load events");
       } finally {
         setLoading(false);
       }
@@ -31,14 +31,14 @@ export default function Home() {
 
   return (
     <>
-    <div className="flex flex-wrap justify-center items-center h-screen space-x-4 grow">
-      {events.map((event: Event) => (
-        <HomeCard key={event.id} event={event} />
-      ))}
-      <div className="w-screen">
-      <Footer />
-    </div>
-    </div>
+      <div className="flex flex-wrap justify-center items-center h-screen space-x-4 grow">
+        {events.map((event: Event) => (
+          <HomeCard key={event.id} event={event} />
+        ))}
+        <div className="w-screen">
+          <Footer />
+        </div>
+      </div>
     </>
   );
 }

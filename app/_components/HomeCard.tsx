@@ -42,7 +42,7 @@ const HomeCard: React.FC<HomeCardProps> = ({ event }) => {
       <div className="px-6 pt-4 pb-2 flex justify-between">
         <button 
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          onClick={(e) => { e.stopPropagation(); router.push(`/events/edit/${event.id}`); }}
+          onClick={(e) => { e.stopPropagation(); router.push(`/event/${event.id}`); }}
         >
           Edit
         </button>

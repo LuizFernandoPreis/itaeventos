@@ -1,9 +1,15 @@
 import EventForm from "@/app/_components/Eventform";
+import Footer from "@/app/_components/Footer";
 
 export default function CreateEventPage() {
-    return (
+  return (
+    <>
       <div>
         <EventForm />
       </div>
-    );
-  }
+      <div className="w-screen">
+        <Footer />
+      </div>
+    </>
+  );
+}
