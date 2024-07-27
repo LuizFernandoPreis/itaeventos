@@ -19,7 +19,7 @@ const HomeCard: React.FC<HomeCardProps> = ({ event }) => {
   
     return (
         <div 
-      className="w-80 max-w-xs rounded overflow-hidden shadow-lg cursor-pointer flex flex-col"
+      className="w-60 max-w-xs rounded overflow-hidden shadow-lg cursor-pointer flex flex-col"
       onClick={handleCardClick}
     >
       <div className="relative h-48 bg-gray-200">
