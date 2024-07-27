@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useForm, SubmitHandler } from "react-hook-form";
 import axios from "axios";
+import Spinner from "@/app/_components/spinner";
 
 interface EditEventFormInputs {
   title: string;
@@ -56,7 +57,7 @@ export default function EditEvent() {
     }
   };
 
-  if (!event) return <p>Loading...</p>;
+  if (!event) return <Spinner/>;
 
   return (
     <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
