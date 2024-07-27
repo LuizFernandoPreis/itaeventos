@@ -5,7 +5,6 @@ import "./globals.css";
 import Navbar from "./_components/Navbar";
 import Footer from "./_components/Footer";
 import { parseCookies } from "nookies";
-import TokenLayout from "./layouts/tokenLayout";
 import { AuthProvider } from "./contexts/AuthContext";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -26,18 +25,20 @@ const RootLayout = ({
       <body className="flex flex-col min-h-screen">
         {isAuthenticated ? (
           <>
-            <header>
+            <header className="flex-shrink-0">
               <Navbar />
             </header>
-            <main>
+            <main className="flex-grow">
               <AuthProvider>{children}</AuthProvider>
             </main>
-            <footer>
+            <footer className="flex-shrink-0">
               <Footer />
             </footer>
           </>
         ) : (
-          <AuthProvider>{children}</AuthProvider>
+          <main className="flex-grow">
+            <AuthProvider>{children}</AuthProvider>
+          </main>
         )}
       </body>
     </html>
