@@ -31,9 +31,6 @@ const RootLayout = ({
         <main className="flex-grow md=auto">
           <AuthProvider>{children}</AuthProvider>
         </main>
-        <footer className="bg-gray-800 text-white py-4 mt-auto">
-          <Footer />
-        </footer>
       </body>
     </html>
   );
