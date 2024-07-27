@@ -31,7 +31,7 @@ const EventForm = () => {
     const reader = new FileReader();
 
     reader.onloadend = () => {
-      setImage('reader.result as string');
+      setImage(reader.result as string);
     };
 
     if (file) {
