@@ -29,9 +29,11 @@ const RootLayout = ({
             <header>
               <Navbar />
             </header>
-            <AuthProvider>{children}</AuthProvider>
+            <main>
+              <AuthProvider>{children}</AuthProvider>
+            </main>
             <footer>
-            <Footer />
+              <Footer />
             </footer>
           </>
         ) : (

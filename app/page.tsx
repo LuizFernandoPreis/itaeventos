@@ -1,43 +1,38 @@
 "use client";
-import React from "react";
-import { Inter } from "next/font/google";
-import "./globals.css";
-import Navbar from "./_components/Navbar";
-import Footer from "./_components/Footer";
-import { parseCookies } from "nookies";
-import { AuthProvider } from "./contexts/AuthContext";
 
-const inter = Inter({ subsets: ["latin"] });
+import { useEffect, useState } from "react";
+import axios from "axios";
+import HomeCard from "./_components/HomeCard";
+import { Event } from "./types/event";
+import Spinner from "./_components/spinner";
+export default function Home() {
+  const [events, setEvents] = useState<Event[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-const RootLayout = ({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) => {
-  const { token } = parseCookies();
-  const isAuthenticated = !!token;
+  useEffect(() => {
+    async function fetchEvents() {
+      try {
+        const response = await axios.get('/api/event');
+        setEvents(response.data);
+      } catch (err) {
+        setError('Failed to load events');
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchEvents();
+  }, []);
+
+  if (loading) return <Spinner />;
+  if (error) return <div>{error}</div>;
 
   return (
-    <html lang="pt">
-      <head>
-        <title>ItaEventos</title>
-      </head>
-      <body className="flex flex-col min-h-screen">
-        {isAuthenticated && (
-          <header className="bg-gray-800 text-white">
-            <Navbar />
-          </header>
-        )}
-        <main className="flex-grow">
-          <AuthProvider>{children}</AuthProvider>
-        </main>
-        {isAuthenticated && (
-          <footer className="bg-gray-800 text-white">
-            <Footer />
-          </footer>
-        )}
-      </body>
-    </html>
+    <div className="flex flex-wrap justify-center items-center h-screen space-x-4">
+      {events.map((event: Event) => (
+        <HomeCard key={event.id} event={event} />
+      ))}
+    </div>
   );
-};
-
+}

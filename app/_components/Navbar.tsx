@@ -60,10 +60,10 @@ const Navbar = () => {
             </a>
             
             <a
-              href="/cadtask"
+              href="/create-event"
               className="block lg:inline-block text-gray-300 hover:text-white mt-4 lg:mt-0 px-4 py-2"
             >
-              Cadastrar Tarefa
+              Novo Evento
             </a>
             <a
               href="/getTask"
