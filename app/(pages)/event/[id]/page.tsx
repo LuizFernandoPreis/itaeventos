@@ -1,6 +1,6 @@
 'use client'
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/router";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useForm, SubmitHandler } from "react-hook-form";
 import axios from "axios";
 
@@ -12,9 +12,19 @@ interface EditEventFormInputs {
   image: string;
 }
 
+interface Event {
+  id: number;
+  title: string;
+  date: string;
+  location: string;
+  description: string;
+  image: string;
+}
+
 export default function EditEvent() {
   const router = useRouter();
-  const { id } = router.query; // Pega o ID do evento da URL
+  const searchParams = useSearchParams();
+  const id = searchParams.get('id'); // Pega o ID do evento da URL
   const { register, handleSubmit, setValue } = useForm<EditEventFormInputs>();
   const [event, setEvent] = useState<Event | null>(null);
 
