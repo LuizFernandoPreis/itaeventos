@@ -20,7 +20,7 @@ const EventForm = () => {
         description,
         image,
       });
-      console.log("Event created successfully:", response.data);
+      alert("Evento cadastrado!");
     } catch (error) {
       console.error("Error creating event:", error);
     }
