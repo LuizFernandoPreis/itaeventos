@@ -18,22 +18,22 @@ const HomeCard: React.FC<HomeCardProps> = ({ event }) => {
     };
   
     return (
-      <div 
-        className="max-w-sm rounded overflow-hidden shadow-lg cursor-pointer" 
+        <div 
+        className="max-w-sm rounded overflow-hidden shadow-lg cursor-pointer flex flex-col"
         onClick={handleCardClick}
       >
-        <div className="relative h-64 w-full">
+        <div className="relative h-48 w-full bg-gray-200">
           <Image 
             src={event.image} 
             alt={event.title} 
             layout="fill" 
             objectFit="cover" 
-            className="rounded-t" 
+            className="rounded-t"
           />
         </div>
-        <div className="px-6 py-4">
+        <div className="px-6 py-4 flex-grow">
           <div className="font-bold text-xl mb-2">{event.title}</div>
-          <p className="text-gray-700 text-base">
+          <p className="text-gray-700 text-base mb-2">
             {event.date} - {event.location}
           </p>
           <p className="text-gray-700 text-base">
