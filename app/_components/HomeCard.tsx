@@ -1,25 +1,22 @@
 import React from "react";
-import { parseCookies } from "nookies";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Event } from "../types/event";
-
-
 
 interface HomeCardProps {
   event: Event;
 }
 
 const HomeCard: React.FC<HomeCardProps> = ({ event }) => {
-    const router = useRouter();
-  
-    const handleCardClick = () => {
-      router.push(`/events/${event.id}`);
-    };
-  
-    return (
-        <div 
-      className="w-60 max-w-xs rounded overflow-hidden shadow-lg cursor-pointer flex flex-col"
+  const router = useRouter();
+
+  const handleCardClick = () => {
+    router.push(`/events/${event.id}`);
+  };
+
+  return (
+    <div 
+      className="w-80 max-w-xs rounded overflow-hidden shadow-lg cursor-pointer flex flex-col"
       onClick={handleCardClick}
     >
       <div className="relative h-48 bg-gray-200">
@@ -31,12 +28,14 @@ const HomeCard: React.FC<HomeCardProps> = ({ event }) => {
           className="rounded-t"
         />
       </div>
-      <div className="px-6 py-4 flex-grow">
-        <div className="font-bold text-xl mb-2">{event.title}</div>
-        <p className="text-gray-700 text-base mb-2">
+      <div className="px-6 py-4 flex flex-col flex-grow">
+        <div className="font-bold text-xl mb-2 truncate">
+          {event.title}
+        </div>
+        <p className="text-gray-700 text-base mb-2 truncate">
           {event.date} - {event.location}
         </p>
-        <p className="text-gray-700 text-base">
+        <p className="text-gray-700 text-base truncate">
           {event.description}
         </p>
       </div>
@@ -57,4 +56,5 @@ const HomeCard: React.FC<HomeCardProps> = ({ event }) => {
     </div>
   );
 };
+
 export default HomeCard;
