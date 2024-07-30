@@ -1,19 +1,14 @@
+// pages/edit-event/[id].tsx
 "use client";
 import React, { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useForm, SubmitHandler } from "react-hook-form";
 import axios from "axios";
 import Spinner from "@/app/_components/spinner";
 import Footer from "@/app/_components/Footer";
-
-interface EditEventFormInputs {
-  title: string;
-  date: string;
-  location: string;
-  description: string;
-  image: string;
-  id: number;
-}
+import { CalendarDaysIcon, ChatBubbleBottomCenterTextIcon, PencilSquareIcon, UserCircleIcon } from "@heroicons/react/24/solid";
+import HeaderSection from "@/app/_components/HeaderSection";
+import EditEventModal from "@/app/_components/EditEvenForm";
+import CreateScriptModal from "@/app/_components/ScheduleModal";
 
 interface Event {
   id: number;
@@ -24,141 +19,120 @@ interface Event {
   image: string;
 }
 
-export default function EditEvent({ params }: { params: { id: Number } }) {
+export default function EditEvent({ params }: { params: { id: number } }) {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const id = params.id;
-  const { register, handleSubmit, setValue } = useForm<EditEventFormInputs>();
   const [event, setEvent] = useState<Event | null>(null);
+  const [title, setTitle] = useState<string | null>(null);
+  const [date, setDate] = useState<string | null>(null);
+  const [description, setDescription] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isCreateScriptModalOpen, setIsCreateScriptModalOpen] = useState(false);
+  const [selectedEventId, setSelectedEventId] = useState<number | null>(null);
+
+  const handleEditModalOpen = (eventId: number) => {
+    setSelectedEventId(eventId);
+    setIsEditModalOpen(true);
+  };
+
+  const handleCreateScriptModalOpen = () => {
+    setIsCreateScriptModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsEditModalOpen(false);
+    setIsCreateScriptModalOpen(false);
+  };
 
   useEffect(() => {
     if (id) {
       axios
-        .get(`/api/event?${id}`)
+        .get(`/api/event?id=${id}`)
         .then((response) => {
-          setEvent(response.data[0]);
-          const data = response.data[0];
-          console.log(response);
-          setValue("title", data.title);
-          setValue("date", data.date);
-          setValue("location", data.location);
-          setValue("description", data.description);
-          setValue("image", data.image);
-          setValue("id", data.id)
-          console.log(response);
+          const data = response.data;
+          setEvent(data);
+          setTitle(data.title);
+          setDate(data.date);
+          setDescription(data.description);
         })
         .catch((error) => {
           console.error("Error fetching event data:", error);
         });
     }
-  }, [id, setValue]);
+  }, [id]);
 
-  const onSubmit: SubmitHandler<EditEventFormInputs> = async (data) => {
-    try {
-        console.log(data)
-      await axios.put(`/api/event`, data);
-      router.push(`/event/${id}`);
-    } catch (error) {
-      console.error("Error updating event:", error);
-    }
-  };
+  
 
   if (!event) return <Spinner />;
 
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+
   return (
     <>
-      <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-md w-full space-y-8">
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Editar Evento
-          </h2>
-          <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
-            <div className="rounded-md shadow-sm -space-y-px">
-              <div>
-                <label htmlFor="title" className="sr-only">
-                  Título
-                </label>
-                <input
-                  {...register("title")}
-                  id="title"
-                  name="title"
-                  type="text"
-                  required
-                  className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                  placeholder="Título do Evento"
-                />
-              </div>
-              <div>
-                <label htmlFor="date" className="sr-only">
-                  Data
-                </label>
-                <input type="number" className="hidden" {...register("id")}/>
-                <input
-                  {...register("date")}
-                  id="date"
-                  name="date"
-                  type="date"
-                  required
-                  className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                  placeholder="Data do Evento"
-                />
-              </div>
-              <div>
-                <label htmlFor="location" className="sr-only">
-                  Localização
-                </label>
-                <input
-                  {...register("location")}
-                  id="location"
-                  name="location"
-                  type="text"
-                  required
-                  className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                  placeholder="Localização do Evento"
-                />
-              </div>
-              <div>
-                <label htmlFor="description" className="sr-only">
-                  Descrição
-                </label>
-                <textarea
-                  {...register("description")}
-                  id="description"
-                  name="description"
-                  required
-                  className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                  placeholder="Descrição do Evento"
-                />
-              </div>
-              <div>
-                <label htmlFor="image" className="sr-only">
-                  Imagem
-                </label>
-                <input
-                  {...register("image")}
-                  id="image"
-                  name="image"
-                  type="text"
-                  className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                  placeholder="URL da Imagem"
-                />
-              </div>
+      <HeaderSection event={event}></HeaderSection>
+      <div className="lg:col-start-3 lg:row-end-1">
+        <h2 className="sr-only">Summary</h2>
+        <div className="rounded-lg bg-gray-50 shadow-sm ring-1 ring-gray-900/5">
+          <dl className="flex flex-wrap">
+            <div className="flex-auto pl-6 pt-6">
+              <dt className="text-sm font-semibold leading-6 text-gray-900">Amount</dt>
+              <dd className="mt-1 text-base font-semibold leading-6 text-gray-900">$10,560.00</dd>
             </div>
-
-            <div>
-              <button
-                type="submit"
-                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-              >
-                Salvar
+            <div className="flex-none self-end px-6 pt-4">
+              <dt className="sr-only">Status</dt>
+              <button id="edit" onClick={openModal}>
+                <PencilSquareIcon aria-hidden="true" className="h-6 w-5 text-gray-400"/>
               </button>
             </div>
-          </form>
+            <div className="mt-6 flex w-full flex-none gap-x-4 border-t border-gray-900/5 px-6 pt-6">
+              <dt className="flex-none">
+                <span className="sr-only">Client</span>
+                <UserCircleIcon aria-hidden="true" className="h-6 w-5 text-gray-400" />
+              </dt>
+              <dd className="text-sm font-medium leading-6 text-gray-900">{title}</dd>
+            </div>
+            <div className="mt-4 flex w-full flex-none gap-x-4 px-6">
+              <dt className="flex-none">
+                <span className="sr-only">Due date</span>
+                <CalendarDaysIcon aria-hidden="true" className="h-6 w-5 text-gray-400" />
+              </dt>
+              <dd className="text-sm leading-6 text-gray-500">
+                <time dateTime="2023-01-31">{date}</time>
+              </dd>
+            </div>
+            <div className="mt-4 flex w-full flex-none gap-x-4 px-6">
+              <dt className="flex-none">
+                <span className="sr-only">Description</span>
+                <ChatBubbleBottomCenterTextIcon aria-hidden="true" className="h-6 w-5 text-gray-400" />
+              </dt>
+              <dd className="text-sm leading-6 text-gray-500">{description}</dd>
+            </div>
+            <div className="mt-4 flex w-full flex-none gap-x-4 px-6">
+            </div>
+          </dl>
         </div>
+        <button
+        type="button"
+        onClick={handleCreateScriptModalOpen}
+        className="fixed bottom-4 right-4 bg-indigo-600 text-white py-2 px-4 rounded-md shadow-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+      >
+        Criar Roteiro
+      </button>
+
+      {/* Exemplo de como você pode abrir o modal de edição */}
+      <EditEventModal isOpen={isEditModalOpen} onClose={handleCloseModal} event={event} />
+
+      <CreateScriptModal
+        isOpen={isCreateScriptModalOpen}
+        onClose={handleCloseModal}
+        eventId={selectedEventId ?? 0} 
+      />
       </div>
-      <div className="w-screen">
-        <Footer />
-      </div>
+      <Footer />
+      <EditEventModal isOpen={isModalOpen} onClose={closeModal} event={event} />
     </>
   );
 }

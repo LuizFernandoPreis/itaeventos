@@ -29,4 +29,19 @@ model Events {
   location    String
   description String
   image       String?
+
+  Schedule Schedule[]
+}
+
+model Schedule {
+  id          Int           @id @default(autoincrement())
+  description String
+  time        DateTime
+  status      String
+  eventId     Int           
+  event       Events        @relation(fields: [eventId], references: [id]) // Relacionamento com o modelo Event
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@map("schedules")
 }
