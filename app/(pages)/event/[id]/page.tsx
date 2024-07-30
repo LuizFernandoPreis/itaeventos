@@ -9,6 +9,7 @@ import { CalendarDaysIcon, ChatBubbleBottomCenterTextIcon, PencilSquareIcon, Use
 import HeaderSection from "@/app/_components/HeaderSection";
 import EditEventModal from "@/app/_components/EditEvenForm";
 import CreateScriptModal from "@/app/_components/ScheduleModal";
+import ScheduleList from "@/app/_components/ScheduleList";
 
 interface Event {
   id: number;
@@ -30,7 +31,7 @@ export default function EditEvent({ params }: { params: { id: number } }) {
 
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isCreateScriptModalOpen, setIsCreateScriptModalOpen] = useState(false);
-  const [selectedEventId, setSelectedEventId] = useState<number | null>(null);
+  const [selectedEventId, setSelectedEventId] = useState<number>(0);
 
   const handleEditModalOpen = (eventId: number) => {
     setSelectedEventId(eventId);
@@ -52,6 +53,7 @@ export default function EditEvent({ params }: { params: { id: number } }) {
         .get(`/api/event?id=${id}`)
         .then((response) => {
           const data = response.data;
+          setSelectedEventId(id)
           setEvent(data);
           setTitle(data.title);
           setDate(data.date);
@@ -74,11 +76,11 @@ export default function EditEvent({ params }: { params: { id: number } }) {
     <>
       <HeaderSection event={event}></HeaderSection>
       <div className="lg:col-start-3 lg:row-end-1">
-        <h2 className="sr-only">Summary</h2>
+        <h2 className="sr-only">Sumário</h2>
         <div className="rounded-lg bg-gray-50 shadow-sm ring-1 ring-gray-900/5">
           <dl className="flex flex-wrap">
             <div className="flex-auto pl-6 pt-6">
-              <dt className="text-sm font-semibold leading-6 text-gray-900">Amount</dt>
+              <dt className="text-sm font-semibold leading-6 text-gray-900">Valor</dt>
               <dd className="mt-1 text-base font-semibold leading-6 text-gray-900">$10,560.00</dd>
             </div>
             <div className="flex-none self-end px-6 pt-4">
@@ -89,7 +91,7 @@ export default function EditEvent({ params }: { params: { id: number } }) {
             </div>
             <div className="mt-6 flex w-full flex-none gap-x-4 border-t border-gray-900/5 px-6 pt-6">
               <dt className="flex-none">
-                <span className="sr-only">Client</span>
+                <span className="sr-only">Cliente</span>
                 <UserCircleIcon aria-hidden="true" className="h-6 w-5 text-gray-400" />
               </dt>
               <dd className="text-sm font-medium leading-6 text-gray-900">{title}</dd>
@@ -105,7 +107,7 @@ export default function EditEvent({ params }: { params: { id: number } }) {
             </div>
             <div className="mt-4 flex w-full flex-none gap-x-4 px-6">
               <dt className="flex-none">
-                <span className="sr-only">Description</span>
+                <span className="sr-only">Descrição</span>
                 <ChatBubbleBottomCenterTextIcon aria-hidden="true" className="h-6 w-5 text-gray-400" />
               </dt>
               <dd className="text-sm leading-6 text-gray-500">{description}</dd>
@@ -121,8 +123,7 @@ export default function EditEvent({ params }: { params: { id: number } }) {
       >
         Criar Roteiro
       </button>
-
-      {/* Exemplo de como você pode abrir o modal de edição */}
+      <ScheduleList eventId={selectedEventId}/>
       <EditEventModal isOpen={isEditModalOpen} onClose={handleCloseModal} event={event} />
 
       <CreateScriptModal

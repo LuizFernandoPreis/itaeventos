@@ -22,9 +22,10 @@ const CreateScriptModal: React.FC<CreateScriptModalProps> = ({ isOpen, onClose, 
   const router = useRouter();
 
   const onSubmit: SubmitHandler<CreateScriptFormInputs> = async (data) => {
+    console.log(eventId)
     try {
       await axios.post(`/api/event/schedule`, { ...data, eventId });
-      router.refresh(); // Pode tentar router.push(router.asPath) se não funcionar
+      router.refresh();
       alert("Roteiro criado com sucesso!");
       onClose(); 
     } catch (error) {
