@@ -26,8 +26,8 @@ const ScriptTable: React.FC<{ eventId: number }> = ({ eventId }) => {
   }, [eventId]);
 
   return (
-    <div className="mt-16">
-      <table className="w-full whitespace-nowrap text-left text-sm leading-6">
+    <div className="mt-16 flex justify-center">
+      <table className="md:w-full w-80 whitespace-nowrap text-left text-sm leading-6">
         <colgroup>
           <col className="w-1/12" />
           <col className="w-3/4" />
