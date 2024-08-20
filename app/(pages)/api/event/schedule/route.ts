@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    return NextResponse.json(script, { status: 201 }); // Use 201 para criação bem-sucedida
+    return NextResponse.json(script, { status: 201 }); 
   } catch (error) {
     console.error('Error creating script:', error);
     return NextResponse.json({ error: 'Erro ao criar roteiro' }, { status: 400 });
@@ -25,12 +25,10 @@ export async function POST(request: NextRequest) {
 export async function GET(request: NextRequest) {
     const url = new URL(request.url);
     const id = url.searchParams.get('id');
-    console.log(id)
+
     try {
       if (id) {
-        const event = await prisma.schedule.findUnique({
-          where: { id: Number(id) },
-        });
+        const event = await prisma.schedule.findMany({where:{eventId: Number(id)}})
   
         if (event) {
           return NextResponse.json(event, { status: 200 });

@@ -23,11 +23,6 @@ const RootLayout = ({
         <title>ItaEventos</title>
       </head>
       <body className="flex flex-col min-h-screen">
-        {isAuthenticated && (
-          <header className="bg-gray-800 text-white">
-            <Navbar />
-          </header>
-        )}
         <main className="flex-grow md=auto">
           <AuthProvider>{children}</AuthProvider>
         </main>

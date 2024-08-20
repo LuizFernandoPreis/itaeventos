@@ -14,7 +14,7 @@ const ScriptTable: React.FC<{ eventId: number }> = ({ eventId }) => {
   useEffect(() => {
     const fetchScripts = async () => {
       try {
-        const response = await axios.get(`/api/event/schedule`);
+        const response = await axios.get(`/api/event/schedule?id=${eventId}`);
         setScripts(response.data);
         console.log(response.data);
       } catch (error) {
@@ -41,7 +41,10 @@ const ScriptTable: React.FC<{ eventId: number }> = ({ eventId }) => {
             <th scope="col" className="px-4 py-3 font-semibold">
               Descrição
             </th>
-            <th scope="col" className="py-3 pl-8 pr-10 text-right font-semibold">
+            <th
+              scope="col"
+              className="py-3 pl-8 pr-10 text-right font-semibold"
+            >
               Horário
             </th>
           </tr>
@@ -57,7 +60,9 @@ const ScriptTable: React.FC<{ eventId: number }> = ({ eventId }) => {
                 />
               </td>
               <td className="px-0 py-5">
-                <div className="truncate font-medium text-gray-900 ml-4">{script.description}</div>
+                <div className="truncate font-medium text-gray-900 ml-4">
+                  {script.description}
+                </div>
               </td>
               <td className="py-5 pl-8 pr-0 text-right">
                 {new Date(script.time).toLocaleString()}
